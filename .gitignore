@@ -1,0 +1,12 @@
+*.pyc
+*.pth
+__pycache__/
+*.ipynb_checkpoints/
+over_time.ipynb
+*.csv
+*.mp4
+testing.py
+h36m/
+models/trained
+logs
+results
