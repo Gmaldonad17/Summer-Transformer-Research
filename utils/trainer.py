@@ -65,10 +65,6 @@ class ModelTrainer:
         
             # Training loop
             for batch in progress_bar:
-                # mean = torch.load("mean-std/human3.6_mean.pt")
-                # std = torch.load("mean-std/human3.6_std.pt")
-                # batch[0] = (batch[0] - mean.expand((batch[0].shape)))/std.expand((batch[0].shape))
-                # batch[1] = (batch[1] - mean.expand((batch[1].shape)))/std.expand((batch[1].shape))
 
                 loss, acc = self.model.training_step(batch, self.optimizer, loss_fn, epoch)
                 # Update tqdm progress bar description with current loss
@@ -84,10 +80,6 @@ class ModelTrainer:
     def validation_loop(self, progress_bar, loss_fn, epoch):
 
         for batch in progress_bar:
-            # mean = torch.load("mean-std/human3.6_mean.pt")
-            # std = torch.load("mean-std/human3.6_std.pt")
-            # batch[0] = (batch[0] - mean.expand((batch[0].shape)))/std.expand((batch[0].shape))
-            # batch[1] = (batch[1] - mean.expand((batch[1].shape)))/std.expand((batch[1].shape))
 
             val_loss, val_acc = self.model.validation_step(batch, loss_fn)
                        
@@ -105,7 +97,6 @@ class ModelTrainer:
         self.train_len = train_dataloader.__len__()
         self.val_len = val_dataloader.__len__()
         
-        # ES = EarlyStopping()
         
         # Start the training loop
         best_loss = 1000
@@ -137,13 +128,6 @@ class ModelTrainer:
             
             self.writer.add_scalar('training_loss', self.Metrics['TLA'][-1], epoch)
             self.writer.add_scalar('validation_loss', self.Metrics['VLA'][-1], epoch)
-
-            # self.scheduler.step()
-
-            
-            # if ES(self.model, torch.mean(torch.Tensor(self.Metrics["VL"][:-self.val_len])) ):
-            #     print("Stopping Model Early")
-            #     break
             
     
     def test(self, test_dataloader, loss_fn):
@@ -154,10 +138,6 @@ class ModelTrainer:
 
         # Training loop
         for batch in tqdm(test_dataloader):
-            # mean = torch.load("mean-std/human3.6_mean.pt")
-            # std = torch.load("mean-std/human3.6_std.pt")
-            # batch[0] = (batch[0] - mean.expand((batch[0].shape)))/std.expand((batch[0].shape))
-            # batch[1] = (batch[1] - mean.expand((batch[1].shape)))/std.expand((batch[1].shape))
 
             loss, acc = self.model.validation_step(batch, self.optimizer, loss_fn)
 
@@ -178,7 +158,7 @@ class ModelTrainer:
         ###### Plotting Metrics on Training ######
         plt.plot(self.Metrics["TLA"][:])
         plt.plot(self.Metrics["VLA"][:])
-        # plt.plot(loss_validation)
+        plt.plot(loss_validation)
         plt.xlabel('Iteration')
         plt.ylabel('Loss')
         plt.title('Loss Curve')

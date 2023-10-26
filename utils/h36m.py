@@ -164,7 +164,6 @@ class H36M(Dataset):
 
         pose = self.p3d[key][fs]
         observed = pose.copy() / 1000.0
-        # observed = pose.copy()
         
         data = torch.tensor(observed[:, self.dim_used].reshape(observed.shape[0], -1, 3))
         Input = data[: self.in_n]

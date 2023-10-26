@@ -78,14 +78,6 @@ def calculate_mpjpe(input_data, target_data, indices=[None]):
         results.append(torch.mean(distances).item())
     return np.array(results)
 
-    # results = []
-    # for index in indices:
-    #     result = torch.sum(torch.mean(torch.norm(
-    #         target_data[:, :index, :, :] - input_data[:, :index, :, :], 
-    #         dim=3), dim=(1,2)), dim=0)
-    #     results.append(result.item())
-    # return np.array(results)
-    
 
 def calculate_ade(input_data, target_data):
     diff = input_data - target_data
@@ -108,7 +100,6 @@ def calculate_mAP(prediction, target, threshold):
     tgt = torch.squeeze(target)
 
     # compute the norm for the last axis: (x,y,z) coordinates
-    # batch size x num_frames x num_joints
     TP = torch.norm(pred-tgt, dim=-1) <= threshold
     TP = TP.int()
     FN = (~TP.bool()).int()
@@ -126,4 +117,4 @@ def calculate_mAP(prediction, target, threshold):
     # average over joints
     mAP = torch.mean(recall)
 
-    return mAP # , TP, FN
+    return mAP, TP, FN
